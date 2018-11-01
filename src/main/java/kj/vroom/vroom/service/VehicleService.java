@@ -6,12 +6,10 @@ import kj.vroom.vroom.domain.Vehicle;
 
 public interface VehicleService {
 
-    void findAll();
+    List<Vehicle> findAll();
     void saveVehicle(Vehicle vehicle);
-    void deleteVehicle(int id);
-    
-    List<Vehicle> findByYear(int year);
-	List<Vehicle> findByMake(String make);
-    List<Vehicle> findByModel(String model);
+    void deleteVehicle(String id);
+
+    List<Vehicle> findVehicle(int year, String make, String model);
 
 }

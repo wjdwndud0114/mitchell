@@ -20,7 +20,7 @@ import kj.vroom.vroom.service.VehicleService;
 
 @RestController
 @RequestMapping("/vehicle")
-public class ExpenseController {
+public class VehicleController {
     
     @Autowired
     VehicleService vehicleService;
@@ -32,19 +32,22 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveVehicle(RequestBody vehicle vehicle) {
+    public ResponseEntity<?> saveVehicle(@RequestBody Vehicle vehicle) {
         vehicleService.saveVehicle(vehicle);
         return new ResponseEntity("Vehicle saved successfully", HttpStatus.OK);
     }
 
     @DeleteMapping
-    public void deleteVehicle(@RequestParam("id") int id) {
+    public void deleteVehicle(@RequestParam("id") String id) {
         vehicleService.deleteVehicle(id);
     }
 
-    @GetMapping("")
-    public ResponseEntity<?> getFiltered(@PathVariable("year") int year, @PathVariable("make") String make, @PathVariable("model") String model) {
-        List<Vehicle> result = new ArrayList();
-        
+    @GetMapping("/find")
+    public ResponseEntity<?> getByYearMakeModel(
+        @RequestParam(value="year", required=false) int year,
+        @RequestParam(value="make", required=false) String make,
+        @RequestParam(value="model", required=false) String model) {
+        List<Vehicle> result = vehicleService.findVehicle(year, make, model);
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 }

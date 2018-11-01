@@ -24,22 +24,12 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public void deleteVehicle(int id) {
-        vehicleRepository.delete(id);
+    public void deleteVehicle(String id) {
+        vehicleRepository.deleteById(id);
     }
 
     @Override
-    public List<Vehicle> findByYear(int year) {
-        return vehicleRepository.findByYear(year);
-    }
-
-    @Override
-    public List<Vehicle> findByMake(String make) {
-        return vehicleRepository.findByMake(make);
-    }
-
-    @Override
-    public List<Vehicle> findByModel(string model) {
-        return vehicleRepository.findByModel(model);
+    public List<Vehicle> findVehicle(int year, String make, String model) {
+        return vehicleRepository.findVehicle(year, make, model);
     }
 }
