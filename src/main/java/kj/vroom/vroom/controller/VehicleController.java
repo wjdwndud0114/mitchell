@@ -1,6 +1,5 @@
 package kj.vroom.vroom.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,26 +27,32 @@ public class VehicleController {
     @GetMapping
     public ResponseEntity<?> getAll() {
         List<Vehicle> result = vehicleService.findAll();
-        return new ResponseEntity(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOne(@PathVariable String id) {
+        Vehicle result = vehicleService.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> saveVehicle(@RequestBody Vehicle vehicle) {
         vehicleService.saveVehicle(vehicle);
-        return new ResponseEntity("Vehicle saved successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Vehicle saved successfully.", HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public void deleteVehicle(@RequestParam("id") String id) {
+    @DeleteMapping("/{id}")
+    public void deleteVehicle(@PathVariable String id) {
         vehicleService.deleteVehicle(id);
     }
 
     @GetMapping("/find")
     public ResponseEntity<?> getByYearMakeModel(
-        @RequestParam(value="year", required=false) int year,
+        @RequestParam(value="year", required=false) Integer year,
         @RequestParam(value="make", required=false) String make,
         @RequestParam(value="model", required=false) String model) {
-        List<Vehicle> result = vehicleService.findVehicle(year, make, model);
-        return new ResponseEntity(result, HttpStatus.OK);
+        List<Vehicle> result = vehicleService.findVehicle(year == null ? 0 : year, make, model);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

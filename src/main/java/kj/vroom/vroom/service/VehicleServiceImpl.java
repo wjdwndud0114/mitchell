@@ -19,6 +19,11 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public Vehicle findById(String id) {
+        return vehicleRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public void saveVehicle(Vehicle vehicle) {
         vehicleRepository.save(vehicle);
     }
