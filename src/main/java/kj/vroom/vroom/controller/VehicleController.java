@@ -29,19 +29,28 @@ public class VehicleController {
     @GetMapping
     public ResponseEntity<?> getAll() {
         List<Vehicle> result = vehicleService.findAll();
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable String id) {
         Vehicle result = vehicleService.findById(id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping
     public ResponseEntity<?> saveVehicle(@RequestBody Vehicle vehicle) {
+        int year = vehicle.getYear();
+        String make = vehicle.getMake().trim();
+        String model = vehicle.getModel().trim();
+        if (year < 1950 || year > 2050 ||
+            make == null || make.isEmpty() ||
+            model == null || make.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid vehicle properties.");
+        }
+            
         vehicleService.saveVehicle(vehicle);
-        return new ResponseEntity<>("Vehicle saved successfully.", HttpStatus.OK);
+        return ResponseEntity.ok("Vehicle saved successfully.");
     }
 
     @DeleteMapping("/{id}")
@@ -55,6 +64,6 @@ public class VehicleController {
         @RequestParam(value="make", required=false) String make,
         @RequestParam(value="model", required=false) String model) {
         List<Vehicle> result = vehicleService.findVehicle(year == null ? 0 : year, make, model);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.ok(result);
     }
 }
