@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-// import { TimelineMax, Power2, Bounce } from 'gsap/umd/TweenMax';
+import { TweenMax, Power3 } from 'gsap/umd/TweenMax';
 
 const VehicleStyled = styled.div`
     display: flex;
@@ -11,6 +11,9 @@ const VehicleStyled = styled.div`
     color: #222;
     margin: 0.5rem;
     width: 332.609px;
+    box-shadow: 15px 15px 50px #131313;
+    transform: translateX(-100px);
+    opacity: 0;
     .top {
         display: flex;
         justify-content: space-between;
@@ -27,7 +30,7 @@ const VehicleStyled = styled.div`
             }
         }
         .labels {
-            background-color: #3454D1;
+            background-color: #555;
             color: #eee;
         }
     }
@@ -42,6 +45,7 @@ const VehicleStyled = styled.div`
         }
         .button:hover {
             cursor: pointer;
+            transform: scale(1.05);
         }
         .update {
             background-color: #98C1D9;
@@ -62,11 +66,18 @@ export default class Vehicle extends Component {
             year: 0,
             make: '',
             model: ''
-        }
+        };
+        this.veh_ref = React.createRef();
     }
 
     componentDidMount () {
         this.setState(this.props.data);
+        
+        TweenMax.to(this.veh_ref.current, 1, {
+            opacity: 1,
+            x: 0,
+            ease: Power3.easeOut
+        });
     }
 
     componentDidUpdate (pp, ps, ss) {
@@ -74,7 +85,7 @@ export default class Vehicle extends Component {
     }
 
     update () {
-        this.setState({ editing: true, tempData: {year: this.state.year, make: this.state.make, model: this.state.model} });
+        this.setState({ editing: true, tempData: { year: this.state.year, make: this.state.make, model: this.state.model } });
     }
 
     confirmUpdate () {
@@ -113,7 +124,7 @@ export default class Vehicle extends Component {
 
     render () {
         return (
-            <VehicleStyled>
+            <VehicleStyled ref={this.veh_ref}>
                 <div className="top">
                     <div className="cols labels">
                         <label>Id: </label>
@@ -129,13 +140,13 @@ export default class Vehicle extends Component {
                             <input type="text" name="model" onChange={e => this.handleTextChange(e)} value={this.state.model} />
                         </div>
                     ) : (
-                        <div className="cols properties">
-                            <div>{this.props.data.id}</div>
-                            <div>{this.state.year}</div>
-                            <div>{this.state.make}</div>
-                            <div>{this.state.model}</div>
-                        </div>
-                    )}
+                            <div className="cols properties">
+                                <div>{this.props.data.id}</div>
+                                <div>{this.state.year}</div>
+                                <div>{this.state.make}</div>
+                                <div>{this.state.model}</div>
+                            </div>
+                        )}
                 </div>
                 {this.state.editing ?
                     (
