@@ -12,6 +12,13 @@ public class Vehicle {
     String make;
     String model;
 
+    public Vehicle(String id, int year, String make, String model) {
+        this.id = id;
+        this.year = year;
+        this.make = make;
+        this.model = model;
+    }
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     
