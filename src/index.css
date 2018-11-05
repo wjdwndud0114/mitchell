@@ -16,7 +16,7 @@ code {
         monospace;
 }
 
-h1 {
+.ReactModal__Content > h1 {
     color: #222;
 }
 .modal_content {
