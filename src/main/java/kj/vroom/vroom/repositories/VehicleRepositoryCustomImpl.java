@@ -29,7 +29,7 @@ public class VehicleRepositoryCustomImpl implements VehicleRepositoryCustom {
             Criteria modelCriteria = Criteria.where("model").is(model);
             query.addCriteria(modelCriteria);            
         }
-
+		
         return mongoTemplate.find(query, Vehicle.class, "vehicles");
     }
 }

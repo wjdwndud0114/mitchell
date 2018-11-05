@@ -45,7 +45,7 @@ public class VehicleController {
         String model = vehicle.getModel().trim();
         if (year < 1950 || year > 2050 ||
             make == null || make.isEmpty() ||
-            model == null || make.isEmpty()) {
+            model == null || model.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid vehicle properties.");
         }
             
@@ -63,7 +63,7 @@ public class VehicleController {
         @RequestParam(value="year", required=false) Integer year,
         @RequestParam(value="make", required=false) String make,
         @RequestParam(value="model", required=false) String model) {
-        List<Vehicle> result = vehicleService.findVehicle(year == null ? 0 : year, make, model);
+        List<Vehicle> result = vehicleService.findVehicle(year == null ? 0 : year, make.isEmpty() ? null : make, model.isEmpty() ? null : model);
         return ResponseEntity.ok(result);
     }
 }
